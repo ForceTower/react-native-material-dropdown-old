@@ -583,6 +583,7 @@ export default class Dropdown extends PureComponent {
       rippleOpacity,
       rippleDuration,
       shadeOpacity,
+      internalComponent
     } = this.props;
 
     let props = propsExtractor(item, index);
@@ -630,9 +631,11 @@ export default class Dropdown extends PureComponent {
 
     return (
       <DropdownItem index={index} {...props}>
-        <Text style={[styles.item, itemTextStyle, textStyle]} numberOfLines={1}>
-          {title}
-        </Text>
+        {internalComponent ? internalComponent(item) : 
+          <Text style={[styles.item, itemTextStyle, textStyle]} numberOfLines={1}>
+            {title}
+          </Text>
+        }
       </DropdownItem>
     );
   }
