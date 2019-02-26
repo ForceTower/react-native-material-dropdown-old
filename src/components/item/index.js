@@ -26,7 +26,6 @@ export default class DropdownItem extends PureComponent {
 
   onPress() {
     let { onPress, index } = this.props;
-
     if ('function' === typeof onPress) {
       onPress(index);
     }

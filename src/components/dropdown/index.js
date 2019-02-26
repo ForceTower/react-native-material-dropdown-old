@@ -407,13 +407,13 @@ export default class Dropdown extends PureComponent {
 
   rippleInsets() {
     let {
-      top = 16,
+      top = 0,
       right = 0,
-      bottom = -8,
+      bottom = 0,
       left = 0,
     } = this.props.rippleInsets || {};
 
-    return { top, right, bottom, left };
+    return { top: 0, right, bottom, left };
   }
 
   resetScrollOffset() {
@@ -583,7 +583,7 @@ export default class Dropdown extends PureComponent {
       rippleOpacity,
       rippleDuration,
       shadeOpacity,
-      internalComponent
+      renderCustomItem
     } = this.props;
 
     let props = propsExtractor(item, index);
@@ -631,10 +631,10 @@ export default class Dropdown extends PureComponent {
 
     return (
       <DropdownItem index={index} {...props}>
-        {internalComponent ? internalComponent(item) : 
-          <Text style={[styles.item, itemTextStyle, textStyle]} numberOfLines={1}>
-            {title}
-          </Text>
+        {renderCustomItem && renderCustomItem()}
+        {!renderCustomItem && <Text style={[styles.item, itemTextStyle, textStyle]} numberOfLines={1}>
+          {title}
+        </Text>
         }
       </DropdownItem>
     );
@@ -729,6 +729,13 @@ export default class Dropdown extends PureComponent {
 
     return (
       <View onLayout={this.onLayout} ref={this.updateContainerRef} style={containerStyle}>
+        <TouchableWithoutFeedback {...touchableProps}>
+          <View pointerEvents='box-only'>
+            {this.renderBase(props)}
+            {this.renderRipple()}
+          </View>
+        </TouchableWithoutFeedback>
+
         <Modal
           visible={modal}
           transparent={true}
